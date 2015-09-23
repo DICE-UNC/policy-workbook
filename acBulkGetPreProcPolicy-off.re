@@ -1,0 +1,1 @@
+acBulkGetPreProcPolicy {msiSetBulkGetPostProcPolicy("off");}
