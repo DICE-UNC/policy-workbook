@@ -351,8 +351,8 @@ modAVUMetadata (*Path, *Attname, *Attvalue, *Aunit, *Status) {
   msiSplitPath (*Path, *Coll, *File);
   *Q1 = select META_DATA_ATTR_VALUE, META_DATA_ATTR_UNITS where DATA_NAME = '*File' and COLL_NAME = '*Coll' and META_DATA_ATTR_NAME = '*Attname';
   foreach (*R1 in *Q1) { 
-    *Avorig = *R1.META_DATA_ATTR_VALUE;}
-    *Auorig = *R1.META_DATA_ATTR_UNITS;}
+    *Avorig = *R1.META_DATA_ATTR_VALUE;
+    *Auorig = *R1.META_DATA_ATTR_UNITS;
   }
   deleteAVUMetadata (*Path, *Attname, *Avorig, *Auorig, *Status);
   addAVUMetadata (*Path, *Attname, *Attvalue, *Aunit, *Status)
