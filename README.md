@@ -1,3 +1,3 @@
 # policy-workbook
 
-Reagan's rules (with contributions from Lisa Stillwell, Hao Xu, and Don Sorenson)
+Rules written by Reagan Moore (with contributions from Lisa Stillwell, Hao Xu, and Don Sorenson)
