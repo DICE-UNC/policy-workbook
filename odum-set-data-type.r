@@ -1,4 +1,4 @@
-myTestRule {
+setDataType {
 # odum-set-data-type.r
 #Input parameter is:
 #  Collection name
