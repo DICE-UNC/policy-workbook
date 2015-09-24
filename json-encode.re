@@ -1,25 +1,25 @@
 jsonEncode(*str) {
     *json = "";
     for(*i=0;*i<strlen(*str);*i=*i+1) {
-        *spec = substr(*str, *i, *i+1);
-        if(*spec == "\'") {
+        *rep = substr(*str, *i, *i+1);
+        if(*rep == "\'") {
             *json = *json ++ "\\\'";
-        } else if (*spec == "\"") {
+        } else if (*rep == "\"") {
             *json = *json ++ "\\\"";
-        } else if (*spec == "\\") {
+        } else if (*rep == "\\") {
             *json = *json ++ "\\\\";
-        } else if (*spec == "\b") {
+        } else if (*rep == "\b") {
             *json = *json ++ "\\b";
-        } else if (*spec == "\f") {
+        } else if (*rep == "\f") {
             *json = *json ++ "\\f";
-        } else if (*spec == "\n") {
+        } else if (*rep == "\n") {
             *json = *json ++ "\\n";
-        } else if (*spec == "\r") {
+        } else if (*rep == "\r") {
             *json = *json ++ "\\r";
-        } else if (*spec == "\t") {
+        } else if (*rep == "\t") {
             *json = *json ++ "\\t";
         } else {
-            *json = *json ++ *s;
+            *json = *json ++ *rep;
         }
     }
     *json;
