@@ -1,4 +1,4 @@
-deleteAccess {
+identifyAccess {
 # odum-list-ACL-files.r
 # rule to list access on all files in a collection for designated account
   checkUserInput (*Usern, $rodsZoneClient);
