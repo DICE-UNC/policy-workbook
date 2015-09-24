@@ -1,4 +1,4 @@
-myTestRule {
+setInheritance {
 # odum-inherit.r
 # Input parameters are:
 #  Recursion flag
