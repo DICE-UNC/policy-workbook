@@ -1,7 +1,7 @@
 jsonEncode(*str) {
     *json = "";
     for(*i=0;*i<strlen(*str);*i=*i+1) {
-        *s = *substr(*str, *i, *i+1);
+        *s = substr(*str, *i, *i+1);
         if(*s == "\'") {
             *json = *json ++ "\\\'";
         } else if (*s == "\"") {
