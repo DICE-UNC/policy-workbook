@@ -1,4 +1,4 @@
-main {
+listExtensions {
 # odum-list-extensions.r
 # list the extensions used in your account
     *c = "/$rodsZoneClient/home/$userNameClient%";
