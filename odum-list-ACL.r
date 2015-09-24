@@ -1,4 +1,4 @@
-main {
+listUserAccess {
 # odum-list-ACL.r
     *c = "/$rodsZoneClient/home/$userNameClient";
     summary(*c);
