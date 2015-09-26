@@ -93,7 +93,7 @@ checkRescInput (*Res, *Zone) {
   if (*Zone != $rodsZoneClient) {
 # execute query in the remote zone
     findZoneHostName(*Zone, *Host, *Port);
-    remote (*Host,"null") {
+    remote (*Host,"<ZONE>*Zone</ZONE>") {
       *Q1 = select count(RESC_ID) where RESC_NAME = '*Res';
       foreach (*R1 in *Q1) {*n = *R1.RESC_ID;}
       if (*n == "0") {
@@ -119,7 +119,7 @@ checkUserInput (*User, *Zone) {
 # $rodsZoneClient is defined by your irods_environment file
   if ($rodsZoneClient != *Zone) {
     findZoneHostName (*Zone, *Host, *Port);
-    remote (*Host, "null") {
+    remote (*Host, "<ZONE>*Zone</ZONE>") {
       *Q = select count(USER_ID) where USER_NAME = '*User' and USER_ZONE = '$rodsZoneClient';
       foreach(*R in *Q) { *Result = *R.USER_ID;}
       if (*Result == "0") {
