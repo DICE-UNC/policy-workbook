@@ -39,7 +39,7 @@ summary (*c) {
 #  Count number of files accessible by this user, and size of files accessible by user
         if (contains(*res, *Usern)) {
           *res.*Usern = str(int(*res.*Usern) + 1)
-          *total.*Usern = str(double(*res.*Usern) + double(*ds))
+          *total.*Usern = str(double(*total.*Usern) + double(*ds))
         } else {
           *res.*Usern = str(1);
           *total.*Usern = *ds;
