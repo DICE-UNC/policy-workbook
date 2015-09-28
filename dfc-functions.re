@@ -180,7 +180,7 @@ createLogFile (*Coll, *Sub, *Name, *Res, *LPath, *Lfile, *Dfile, *L_FD) {
 #============ create a collection for log files if it does not exist ===============
   *LPath = "*Coll/*Sub";
   isColl (*LPath, "stdout", *Status);
-  if (*Status < "0") { fail;}
+  if (*Status < 0) { fail;}
 #============ create file into which results will be written =========================
   *Lfile = "*LPath/*Name-*TimeH";
   *Dfile = "destRescName=*Res++++forceFlag=";
@@ -327,6 +327,7 @@ getRescColl (*Coll, *Rlist, *Ulist, *Lfile, *Num) {
 }
  
 isColl (*LPath, *Lfile, *Status) {
+  *Status = 0;
   *Query0 = select count(COLL_ID) where COLL_NAME = '*LPath';
   foreach(*Row0 in *Query0) {*Result = *Row0.COLL_ID;}
   if(*Result == "0" ) {
