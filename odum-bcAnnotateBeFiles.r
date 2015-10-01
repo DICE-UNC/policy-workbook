@@ -19,7 +19,7 @@ bcAnnotateBeFilesRule {
     *timeStamp = double (time());
     msiSplitPath(*image, *Coll, *File);
     # First check that the image exists
-    Q1 = select count(DATA_NAME) where DATA_NAME =  '*File ' and COLL_NAME =  '*Coll '; 
+    *Q1 = select count(DATA_NAME) where DATA_NAME =  '*File' and COLL_NAME =  '*Coll'; 
     foreach (*R1 in *Q1) {
       *Num = *R1.DATA_NAME;
       if (*Num == "0") {
@@ -33,7 +33,7 @@ bcAnnotateBeFilesRule {
     # Now Make a query to get the path to the image and the resource name
     # DATA_PATH: Physical path name for digital object in resource
     # DATA_RESC_NAME: Logical name of storage resource
-    Query = select DATA_PATH, DATA_RESC_NAME where DATA_NAME =  '*File ' and COLL_NAME =  '*Coll ';
+    *Query = select DATA_PATH, DATA_RESC_NAME where DATA_NAME =  '*File' and COLL_NAME =  '*Coll';
     foreach (*row in *Query) {
         *PathToImageFile = *row.DATA_PATH;
         *Resource = *row.DATA_RESC_NAME;
