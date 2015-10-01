@@ -16,7 +16,7 @@ bcGenerateFiwalkRule {
     msiSplitPath(*image, *Coll, *File);
 
     # Query the metadata catalog check whether "image" exists
-    Q1 = select DATA_NAME) where DATA_NAME = '*File' and COLL_NAME = '*Coll';
+    *Q1 = select DATA_NAME) where DATA_NAME = '*File' and COLL_NAME = '*Coll';
     foreach(*R1 in *Q1) {
       *Num = *R1.DATA_NAME;
       if (*Num == "0") {
