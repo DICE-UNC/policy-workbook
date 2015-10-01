@@ -132,10 +132,10 @@ bcGenerateReportsRule {
     *Arg7 = "--conf";
     *Arg8 = execCmdArg(*PathToConfigFile);
 
-    writeLine("stdout”, “iRODS: Generating BitCurator Reports...");
-    writeLine ("stdout”, “Command: *Cmd *Arg1 *Arg2 *Arg3 *Arg4 *Arg5 *Arg6 *Arg7 *Arg8");
+    writeLine("stdout", "iRODS: Generating BitCurator Reports...");
+    writeLine ("stdout", "Command: *Cmd *Arg1 *Arg2 *Arg3 *Arg4 *Arg5 *Arg6 *Arg7 *Arg8");
 
-    if (errorcode(msiExecCmd(*Cmd,"*Arg1 *Arg2 *Arg3 *Arg4 *Arg5 *Arg6 *Arg7 *Arg8”, “null”, “*hintPath”, “null",*Result)) < 0) {
+    if (errorcode(msiExecCmd(*Cmd,"*Arg1 *Arg2 *Arg3 *Arg4 *Arg5 *Arg6 *Arg7 *Arg8", "null", "*hintPath", "null",*Result)) < 0) {
         if(errormsg(*Result,*msg)==0) {
             msiGetStderrInExecCmdOut(*Result,*Out);
             writeLine("stdout", "ERROR: *Out");
