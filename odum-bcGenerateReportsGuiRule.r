@@ -12,8 +12,8 @@ bcGenerateReportsGuiRule {
     writeLine("stdout”, “Running Generate Reports command...");
     writeLine ("stdout”, “Command: *Cmd ");
 
-    msiExecCmd(*Cmd, "null”, “null”, “null”, “null",*Result);
-    if (errorcode(msiExecCmd(*Cmd, "null”, “null”, “null”, “null",*Result)) < 0) {
+    msiExecCmd(*Cmd, "null", "null", "null", "null",*Result);
+    if (errorcode(msiExecCmd(*Cmd, "null", "null", "null", "null",*Result)) < 0) {
         if(errormsg(*Result,*msg)==0) {
             msiGetStderrInExecCmdOut(*Result,*Out);
             writeLine("stdout", "ERROR: *Out");
