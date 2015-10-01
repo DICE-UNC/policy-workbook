@@ -94,7 +94,7 @@ bcAnnotateBeFilesRule {
     writeLine("stdout”, “Running identify_filenames Command...");
     writeLine ("stdout”, “Command: *Cmd *Arg1 *Arg2 *Arg3 *Arg4 *Arg5");
 
-    if (errorcode(msiExecCmd(*Cmd,"*Arg1 *Arg2 *Arg3 *Arg4 *Arg5”, “null”, “*image”, “null",*Result)) < 0) {
+    if (errorcode(msiExecCmd(*Cmd,"*Arg1 *Arg2 *Arg3 *Arg4 *Arg5", "null", "*image", "null",*Result)) < 0) {
         if(errormsg(*Result,*msg)==0) {
             msiGetStderrInExecCmdOut(*Result,*Out);
             writeLine("stdout", "ERROR: *Out");
