@@ -20,9 +20,9 @@ bcExtractFeatureFilesRule {
     msiSplitPath(*image, *Coll, *File);
     # Query the metadata catalog
     # First check that the image exists
-    Q1 = select count(DATA_NAME) where DATA_NAME =  '*File ' and COLL_NAME =  '*Coll '; 
+    *Q1 = select count(DATA_ID) where DATA_NAME =  '*File' and COLL_NAME =  '*Coll'; 
     foreach (*R1 in *Q1) {
-      *Num = *R1.DATA_NAME;
+      *Num = *R1.DATA_ID;
       if (*Num == "0") {
         writeLine("stdout", "Please enter a filename");
         fail;
@@ -34,7 +34,7 @@ bcExtractFeatureFilesRule {
     # Now Make a query to get the path to the image and the resource name
     # DATA_PATH: Physical path name for digital object in resource
     # DATA_RESC_NAME: Logical name of storage resource
-    Query = select DATA_PATH, DATA_RESC_NAME where DATA_NAME =  '*File ' and COLL_NAME =  '*Coll ';
+    *Query = select DATA_PATH, DATA_RESC_NAME where DATA_NAME =  '*File' and COLL_NAME =  '*Coll';
     foreach (*row in *Query) {
         *Path = *row.DATA_PATH;
         *Resource = *row.DATA_RESC_NAME;
