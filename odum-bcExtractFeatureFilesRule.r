@@ -59,7 +59,7 @@ bcExtractFeatureFilesRule {
     writeLine("stdout”, “Running Bulk Extractor Tool...");
     writeLine ("stdout”, “Command: *Cmd *Arg1 *Arg2 *Arg3");
 
-    if (errorcode(msiExecCmd(*Cmd,"*Arg1 *Arg2 *Arg3”, “null”, “*image”, “null",*Result)) < 0) {
+    if (errorcode(msiExecCmd(*Cmd,"*Arg1 *Arg2 *Arg3", "null", “*image”, "null",*Result)) < 0) {
         if(errormsg(*Result,*msg)==0) {
             msiGetStderrInExecCmdOut(*Result,*Out);
             writeLine("stdout", "ERROR:*Out");
