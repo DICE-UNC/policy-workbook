@@ -238,14 +238,6 @@ deleteAVUMetadata (*Path, *Attname, *Attvalue, *AUnit, *Status) {
   msiRemoveKeyValuePairsFromObj (*Keyval, *Path, "-d");
 }
 
-findZoneHostName (*Zone, *Host, *Port) {
-  *Q1 = select ZONE_CONNECTION where ZONE_NAME = '*Zone';
-  foreach (*R1 in *Q1) {
-    *Conn = *R1.ZONE_CONNECTION;
-    msiSplitPathByKey (*Conn, ":", *Host, *Port);
-  }
-}
-
 ext(*p) {
     *b = trimr(*p, ".");
     *ext = if *b == *p then "no ext" else substr(*p, strlen(*b)+1, strlen(*p));
