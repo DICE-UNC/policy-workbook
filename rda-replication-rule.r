@@ -25,7 +25,7 @@ periodicReplicaCreation {
     *colldataID = "0";
 #this is used to round robin through available storage resources
     *Jround = 0;
-    createLogFile (*Coll, "log", "Check", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+    createLogFile (*Coll, "log", "Check", *Res, *LPath, *Lfile, *L_FD);
 #== check whether the attribute TEST_DATA_ID has been set from a prior execution ====
     checkMetaExistsColl ("TEST_DATA_ID", *Coll, *Lfile, *colldataID);
     getNumSizeColl (*Coll, *colldataID, *Size, *Num);
