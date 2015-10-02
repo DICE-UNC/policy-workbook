@@ -11,7 +11,7 @@ myStagingRule {
   msiGetSystemTime(*TimeA,"unix");
 
 #============ create a collection for log files if it does not exist ===============
-  createLogFile(*Dest, "log", "Check", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+  createLogFile(*Dest, "log", "Check", *Res, *LPath, *Lfile, *L_FD);
 
 #============ find files to stage
   *Query = select DATA_NAME, DATA_CHECKSUM, COLL_NAME, DATA_MODIFY_TIME where COLL_NAME like '*Src%';
