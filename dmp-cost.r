@@ -7,7 +7,7 @@ costReport {
   checkCollInput (*Rep);
   checkRescInput (*Res, $rodsZoneClient);
 #============ create a collection for log files if it does not exist ===============
-  createLogFile (*Rep, "Reports", *Name, *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+  createLogFile (*Rep, "Reports", *Name, *Res, *LPath, *Lfile, *L_FD);
 
   *Count = 0;
   *Tot = 0.;
