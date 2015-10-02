@@ -173,7 +173,7 @@ createList(*Lista, *Num, *Val) {
   }
 }
 
-createLogFile (*Coll, *Sub, *Name, *Res, *LPath, *Lfile, *Dfile, *L_FD) {
+createLogFile (*Coll, *Sub, *Name, *Res, *LPath, *Lfile, *L_FD) {
 # Create a log sub-directory within *Coll if it is missing
 # Create a timestamped log file with the input file name *Name
   msiGetSystemTime(*TimeH,"human");
