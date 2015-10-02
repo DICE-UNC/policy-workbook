@@ -6,7 +6,7 @@ reportCollection {
   checkCollInput (*PathColl);
   checkRescInput (*Res, $rodsZoneClient);
 #============ create a collection for reports if it does not exist ===============
-  createLogFile (*PathColl, "Reports", "Report", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+  createLogFile (*PathColl, "Reports", "Report", *Res, *LPath, *Lfile, *L_FD);
 
   *Totsize = 0.0;
   *Q0 = select count(DATA_ID), sum(DATA_SIZE), COLL_NAME where COLL_NAME like '*Coll%';
