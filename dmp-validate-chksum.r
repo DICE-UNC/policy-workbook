@@ -8,7 +8,7 @@ validateChecksums {
 #========= check whether a collection was defined ===============================
   checkCollInput(*Coll);
 #============ create a collection for log files if it does not exist ===============
-  createLogFile (*Coll, "log", "Check", *Res, *LPath, *Lfile, *Dfile, *L_FD);
+  createLogFile (*Coll, "log", "Check", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
 #============== loop over all the files in the collection ===============
   *Q1 = select DATA_ID, DATA_NAME, COLL_NAME, DATA_CHECKSUM where COLL_NAME = '*Coll';
   foreach(*R1 in *Q1) {
