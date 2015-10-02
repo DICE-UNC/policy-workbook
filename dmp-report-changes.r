@@ -3,7 +3,7 @@ ListChanges {
 # List all files in the version directory
 #============ create a collection for log files if it does not exist ===============
   checkRescInput (*Res, $rodsZoneClient);
-  createLogFile ("/Mauna/home/atmos/change", "log", "Change", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+  createLogFile ("/Mauna/home/atmos/change", "log", "Change", *Res, *LPath, *Lfile, *L_FD);
  
   *Q2 = select DATA_NAME, COLL_NAME where COLL_NAME like '/Mauna/home/atmos/version%';
   foreach (*R2 in *Q2) {
