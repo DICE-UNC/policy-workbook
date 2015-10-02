@@ -4,7 +4,7 @@ listRules {
 #============ create a collection for reports if it does not exist ===============
   checkCollInput (*Coll);
   checkRescInput (*Res, $rodsZoneClient);
-  createLogFile (*Coll, "Reports", "Policies", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+  createLogFile (*Coll, "Reports", "Policies", *Res, *LPath, *Lfile, *L_FD);
 
   msiAdmShowIRB(*A);
   msiDataObjCreate("*Lfile","null",*FD);
