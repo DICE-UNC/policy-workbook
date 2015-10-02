@@ -8,7 +8,7 @@ CopyfileACLAVU {
   *Dest= "/*DestZone/home/$userNameClient" ++ "#$rodsZoneClient/" ++ *Coll;
   checkCollInput (*Src);
   checkCollInput (*Dest);
-  createLogFile(*Dest, "log", "Check", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+  createLogFile(*Dest, "log", "Check", *Res, *LPath, *Lfile, *L_FD);
  
 #Get USER_ID for the input user name
   *Query = select USER_ID where USER_NAME = '$userNameClient';
