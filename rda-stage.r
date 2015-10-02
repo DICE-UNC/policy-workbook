@@ -7,7 +7,7 @@ myStagingRule {
   checkCollInput (*Src);
   checkCollInput (*Dest); 
   checkRescInput (*Res, *DestZone);
-  createLogFile (*Dest, "log", "Check", *Res, *LPath, *Lfile, *Dfile, *L_FD);
+  createLogFile (*Dest, "log", "Check", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
  
 #============ find files to stage
   *Query = select DATA_NAME, DATA_CHECKSUM where COLL_NAME = '*Src';
