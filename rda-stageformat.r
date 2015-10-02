@@ -10,7 +10,7 @@ myStagingRule {
 # Put all files with .r into collection /$rodsZoneClient/home/$userNameClient/*Coll
 
 # ==== create a collection for log files if it does not exist
-    createLogFile (*Dest, "log", "Check", *Res, *LPath, *Lfile, *Dfile, *L_FD);
+    createLogFile (*Dest, "log", "Check", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
 
 #============ find files to stage
     *Query = select DATA_NAME where COLL_NAME = '*Src' and DATA_NAME like '%.r';
