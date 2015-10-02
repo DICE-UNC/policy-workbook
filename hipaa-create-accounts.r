@@ -3,7 +3,7 @@ createAccounts {
 # Creates a time-stamped pipe-delimited file for the accounts in a data grid
   checkRescInput (*Res, $rodsZoneClient);
   *Coll = "/$rodsZoneClient/home/$userNameClient");
-  createLogFile (*Coll, "Accounts", *Accounts, *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+  createLogFile (*Coll, "Accounts", *Accounts, *Res, *LPath, *Lfile, *L_FD);
   *Q1 = select USER_NAME, USER_TYPE;
   *Zone = $rodsZoneClient;
   foreach (*R1 in *Q1) {
