@@ -4,7 +4,7 @@ checkReplicas{
 #============ create a collection for log files if it does not exist ===============
   checkCollInput (*Coll);
   checkRescInput (*Res, $rodsZoneClient);
-  createLogFile (*Coll, "log", "Check", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
+  createLogFile (*Coll, "log", "Check", *Res, *LPath, *Lfile, *L_FD);
 
  *Query = select DATA_NAME,COLL_NAME where COLL_NAME like '*Coll%';
  foreach(*Row in *Query){
