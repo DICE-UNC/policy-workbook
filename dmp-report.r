@@ -5,7 +5,7 @@ reportCollection {
   checkCollInput (*PathColl);
   checkRescInput (*Res, $rodsZoneClient);
 #============ create a collection for reports if it does not exist ===============
-  createLogFile (*PathColl, "Reports", "Report", *Res, *LPath, *Lfile, *Dfile, *L_FD);
+  createLogFile (*PathColl, "Reports", "Report", *Res, *LPath, *Lfile, "forceFlag=", *L_FD);
  
   *Q0 = select USER_ID where USER_NAME = 'anonymous';
   foreach (*R0 in *Q0) {*Pub = *R0.USER_ID;}
