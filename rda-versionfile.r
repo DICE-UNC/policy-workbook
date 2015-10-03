@@ -33,6 +33,7 @@ versionrule {
   *Vers = *Fstart ++ "." ++ "*Tim" ++ *Fend;
   *Pathver = *Coll ++ "/" ++ *Vers;
   msiDataObjCopy(*Path,*Pathver, "forceFlag=",*Status);
+  msiSetACL("default", "own", $userNameClient, *Pathver);
   writeLine("stdout","*Path written as version *Pathver");
 }
 INPUT *Fil=$"test-file"
