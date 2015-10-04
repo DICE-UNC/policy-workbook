@@ -7,7 +7,6 @@ listRules {
   createLogFile (*Coll, "Reports", "Policies", *Res, *LPath, *Lfile, *L_FD);
 
   msiAdmShowIRB(*A);
-  msiDataObjCreate("*Lfile","null",*FD);
   msiDataObjWrite(*FD,"stdout",*WLEN);
   msiDataObjClose(*FD,*Status);
 }
