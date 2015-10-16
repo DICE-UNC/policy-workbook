@@ -14,8 +14,7 @@ validateDataObjectOntologies {
       foreach(*R4 in *Q4) {
         *Name = *R4.META_DATA_ATTR_NAME;
         msiCurlUrlEncodeString(*Name, *encodedUrl);
-        *url = "http://localhost:8080/hive-voccabservice-rest-1.0-SNAPSHOT/rest/concept/uat/con
-cept?uri=" ++  str(*encodedUrl);
+        *url = "http://localhost:8080/hive-voccabservice-rest-1.0-SNAPSHOT/rest/concept/uat/concept?uri=" ++  str(*encodedUrl);
         msiCurlGetStr(*url, *outStr);
         if (*outStr like "\*DataNotFoundException\*") then {
           writeLine("stdout", "*C/*File has uri *Name that is not in a valid ontology");
