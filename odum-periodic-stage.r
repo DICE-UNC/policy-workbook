@@ -35,7 +35,7 @@ msiGetSystemTime(*TimeA,"unix");
          *Dest1 = *Dest ++ *C1 ++ "/" ++ *File;
       }
       isColl(*DestColl, *Lfile, *Status);
-      if (*Status >= "0") {
+      if (*Status >= 0) {
         msiDataObjCopy(*Src1,*Dest1,"destRescName=*Res++++forceFlag=", *Status);
         msiSetACL("default","own","rwmoore#testZone", *Dest1);
         msiDataObjChksum(*Dest1, "forceChksum=", *Chksum);
