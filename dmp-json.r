@@ -7,12 +7,12 @@ jsonFileMeta {
   checkRescInput (*Res, $rodsZoneClient);
   *LPath = "*Coll/Metadata";
   isColl(*LPath, "stdout", *Status);
-  if (*Status >= "0") {
+  if (*Status >= 0) {
     *Q1 = select DATA_NAME where COLL_NAME = '*Coll';
     foreach (*R1 in *Q1) {
       *File = *R1.DATA_NAME;
 #============ create file into which results will be written =========================
-      *Lfile = "*LPath" ++ "/" ++ "*File" ++ "-metadata";
+      *Lfile = "*LPath" ++ "/" ++ "*File" ++ ".json";
       *Dfile = "destRescName=*Res++++forceFlag=";
       msiDataObjCreate(*Lfile, *Dfile, *L_FD);    
       writeLine("*Lfile","\{");
