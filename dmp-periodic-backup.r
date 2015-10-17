@@ -36,7 +36,7 @@ collArchive (*Res, *Src, *Dest, *Acct) {
        *Dest1 = *Dest ++ *C1 ++ "/" ++ *File;
     }
     isColl(*DestColl, *Lfile, *Status1);
-    if (*Status1 == "0") {
+    if (*Status1 == 0) {
 # If file is already in the archive, do not copy it again
       isData(*DestColl, *File, *Status);
       if (*Status == "0") {
