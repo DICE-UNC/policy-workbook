@@ -12,7 +12,7 @@ stageByTime {
     *Src = *Srccoll ++ "/*File";
     *Destc = *Destcoll ++ "/*B";
     isColl(*Destc, "stdout", *Status);
-    if (*Status >= "0") {
+    if (*Status >= 0) {
       *Dest = *Destc ++ "/*File"
       msiDataObjRename(*Src, *Dest, "0", *Status);
       writeLine("stdout","moved file from *Src to *Dest");
