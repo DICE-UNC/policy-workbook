@@ -13,8 +13,10 @@ setDataType {
     *Collname = *Row.COLL_NAME;
     *Pathname = "*Collname/*File";
     *Objid = *Row.DATA_ID;
-    msiSplitPathByKey (*Pathname, ".", *Head, *Type);
-    msiSetDataType(*Objid, *Pathname, *Type, *Status);
+    *Head = *Pathname;
+    *Type = "generic";
+    *out = errormsg(msiSplitPathByKey (*Pathname, ".", *Head, *Type), *msg);
+    *out2 = errormsg(msiSetDataType(*Objid, *Pathname, *Type, *Status), *msg1);
     writeLine("stdout", "File *Pathname has data type *Type");
   }
 }
