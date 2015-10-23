@@ -7,7 +7,10 @@ acPostProcForPut {
 # construct version name
   msiGetSystemTime(*Tim, "human");
 # check whether there is a file extension on the name
-  msiSplitPathByKey (*File, ".",*Fstart, *Fend);
+  *Head = *Pathname;
+  *Type = "generic";
+  *out = errormsg(msiSplitPathByKey (*Pathname, ".", *Head, *Type), *msg);
+  *out2 = errormsg(msiSetDataType(*Objid, *Pathname, *Type, *Status), *msg1);
   *Vers = *Fstart ++ "." ++ "*Tim" ++ *Fend;
   *Pathver = "/Mauna/home/atmos/version/” ++ *Coll ++ "/" ++ *Vers;
   msiDataObjCopy(*Path,*Pathver, "forceFlag=",*Status);
