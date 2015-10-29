@@ -7,7 +7,7 @@ acCheckPasswordStrength(*password) {
   }
 # Require at least one number
   for (*I=1,*I<10,*I=*I+1) {
-    msiSpitPathByKey(*password, "*I", *H, *E);
+    msiSplitPathByKey(*password, "*I", *H, *E);
     if (*E != "") {
       succeed;
     }
