@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from HTMLParser import HTMLParser
 from urlparse import urljoin
 import sys
