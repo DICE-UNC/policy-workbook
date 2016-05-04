@@ -13,7 +13,7 @@ main {
       if (*Use > 0.0) {
         *Gb = *Use/(1024.*1024.*1024.);
         writeLine("stdout", "Usage is *Gb Gbytes by *Name");
-        *Total = *Total + *Use;
+        *Total = *Total + *Gb;
       }
       if(*Use >= *Max) {
         *Max = *Use;
@@ -21,8 +21,9 @@ main {
       }
     }
   }
-  writeLine("stdout", "Total usage is *Total bytes");
-  writeLine("stdout", "Maximum usage is *Max bytes by *Usem");
+  *Max = *Max / (1024.*1024.*1024.);
+  writeLine("stdout", "Total usage is *Total Gbytes");
+  writeLine("stdout", "Maximum usage is *Max Gbytes by *Usem");
 }
 input null
 output ruleExecOut

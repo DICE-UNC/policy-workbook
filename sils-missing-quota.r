@@ -1,4 +1,4 @@
-main {
+missingQuota {
 # sils-missing-quota.r
   *rs = select USER_ID, USER_NAME;
   *Count = 0;

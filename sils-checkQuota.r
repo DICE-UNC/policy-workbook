@@ -49,34 +49,5 @@ main {
     writeLine("stdout","*Us\t*Usv");
   }
 }
-createList(*Lista, *Num, *Val) {
-# create a list with default values *Val
-  *Lista = list(*Val);
-  for (*I=1;*I<*Num;*I=*I+1) {
-    *Lista = cons(*Val, *Lista);
-  }
-}
-addToList(*Name, *Usage, *Listnam, *Listuse, *Min, *Num) {
-# insert new usage in list keeping top 10
-  *S = 0;
-  for (*I=0;*I<*Num;*I=*I+1) {
-    *Val = elem(*Listuse,*I);
-    *Use = double(*Val);
-    if (*Use < *Usage) {
-      for (*J=*Num-1;*J>*I;*J=*J-1) {
-        *Jm1 = *J-1;
-        *Use1 = elem(*Listuse,*Jm1);
-        *Nam1 = elem(*Listnam,*Jm1);
-        *Listuse = setelem(*Listuse,*J,*Use1);
-        *Listnam = setelem(*Listnam,*J,*Nam1);
-      }
-      *Listuse = setelem(*Listuse,*I,str(*Usage));
-      *Listnam = setelem(*Listnam,*I,*Name);
-      *S = 1;
-    }
-    if (*S == 1) {break;}
-  }  
-  *Min = double(elem(*Listuse,*Num -1));
-}
 input *Num = 20
 output ruleExecOut
