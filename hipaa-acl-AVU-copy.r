@@ -58,7 +58,7 @@ CopyACLAVU {
           msiSetAVU ("-d", *Dest1, *Attn, *Attv, *Attu);
         }
       }
-      writeLine("*Lfile", "Moved file *Src1 to *Dest1");
+      writeLine("stdout", "Moved file *Src1 to *Dest1");
 # Delete file from staging area
       msiDataObjUnlink("objPath=*Src1++++forceFlag=", *Status);
     }

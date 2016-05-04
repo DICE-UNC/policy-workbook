@@ -25,10 +25,10 @@ costReport {
   *CostS = *FacSize * *Tot / 1000000000.;
   *CostN = *FacCount * *Count / 1000000;
   *CostM = *FacMeta * *Countmeta / 1000000;
-  writeLine ("*Lfile","Storage cost = *CostS for *Tot bytes");
-  writeLine ("*Lfile", "File cost = *CostN for *Count files");
-  writeLine ("*Lfile", "Metadata cost = *CostM for *Countmeta attributes");
+  writeLine ("*Lfile","Storage cost = \$*CostS for *Tot bytes");
+  writeLine ("*Lfile", "File cost = \$*CostN for *Count files");
+  writeLine ("*Lfile", "Metadata cost = \$*CostM for *Countmeta attributes");
 }
-INPUT *FacSize=0.10, *FacCount=1., *FacMeta=1., *Src=$"/$rodsZoneClient/home/i$userNameClient/archive", *Res="demoResc", *Rep=$"/$rodsZoneClient/home/$userNameClient/reports"
+INPUT *FacSize=0.10, *FacCount=1., *FacMeta=1., *Src=$"/$rodsZoneClient/home/$userNameClient/archive", *Res="LTLResc", *Rep=$"/$rodsZoneClient/home/$userNameClient/reports"
 OUTPUT ruleExecOut
 

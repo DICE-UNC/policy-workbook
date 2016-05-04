@@ -1,6 +1,5 @@
 reportCollection {
 # dmp-report-size.r
-# Identify publicly accessible collections
 # List the number of files and size
   checkCollInput (*Coll);
   checkCollInput (*PathColl);

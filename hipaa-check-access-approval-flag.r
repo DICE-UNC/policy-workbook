@@ -1,5 +1,5 @@
 setAccessApproval {
-# hipaa-check-access-approval.r
+# hipaa-check-access-approval-flag.r
 # The rule checks the ACCESS_APPROVAL flag on files in a collection
   *Coll = "/$rodsZoneClient/home/$userNameClient/*Collrel";
   checkCollInput (*Coll);
@@ -9,17 +9,13 @@ setAccessApproval {
     *FileId = *R1.DATA_ID;
     *Coll1= *R1.COLL_NAME;
     *Path = "*Coll1/*File";
-    *Q2 = select META_DATA_ATTR_NAME, META_DATA_ATTR_VALUE where COLL_NAME = *Coll1 and DATA_NAME = *File;
     *Count = 0;
+    *Q2 = select  META_DATA_ATTR_VALUE where  DATA_ID = *FileId and META_DATA_ATTR_NAME = 'ACCESS_APPROVAL';
     foreach(*R2 in *Q2) {
-      *Name = *R2.META_DATA_ATTR_NAME;
+      *Count = 1;
       *Val = *R2.META_DATA_ATTR_VALUE;
-      if(*Name == "ACCESS_APPROVAL") {
-        *Count = 1;
-        if(*Val != "0") {
-          writeLine("stdout","*Path has ACCESS_APPROVAL != 0");
-          break;
-        }
+      if(*Val != "0") {
+        writeLine("stdout","*Path has ACCESS_APPROVAL = *Val");
       }
     }
     if (*Count == 0) {

@@ -11,10 +11,10 @@ checkReplicas{
    *Col = *Row.COLL_NAME;
    *Data = *Row.DATA_NAME;
    *temp_count=0;
-   *Query2 = select count(DATA_ID) where COLL_NAME='*Col' and DATA_NAME='*Data';
+   *Query2 = select count(DATA_PATH) where COLL_NAME='*Col' and DATA_NAME='*Data';
  # For every coll/data find those which do not have the required number of replicas
    foreach(*Row2 in *Query2){
-     *temp_count = *Row2.DATA_ID;
+     *temp_count = *Row2.DATA_PATH;
    }
    if(int(*temp_count) < *Numrep){
      *n = *Numrep - int(*temp_count);
@@ -22,5 +22,5 @@ checkReplicas{
    }
  }
 }
-INPUT *Coll =$"/Mauna/home/atmos/sensor", *Res =$"maunaResc", *Numrep =$3
+INPUT *Coll=$"/$rodsZoneClient/home/$userNameClient", *Res=$"LTLResc", *Numrep=$2
 OUTPUT ruleExecOut

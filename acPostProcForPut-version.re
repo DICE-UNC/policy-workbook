@@ -11,7 +11,7 @@ acPostProcForPut {
   *Fend = "";
   *out = errormsg(msiSplitPathByKey (*File, ".",*Fstart, *Fend), *Msg);
   *Vers = *Fstart ++ "." ++ "*Tim" ++ *Fend;
-  *Pathver = "/$rodsZoneClient/home/$userNameClient/version/” ++ *Coll ++ "/" ++ *Vers;
+  *Pathver = "/Mauna/home/atmos/version/” ++ *Coll ++ "/" ++ *Vers;
   msiDataObjCopy(*Path,*Pathver, "forceFlag=",*Status);
   msiSetACL("default", "own", $userNameClient, *Pathver);
 }

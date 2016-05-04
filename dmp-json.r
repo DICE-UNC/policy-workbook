@@ -37,8 +37,10 @@ jsonFileMeta {
       writeLine("*Lfile"," \]");
       writeLine("*Lfile","\}");
       msiDataObjClose(*L_FD, *Status);
+      writeLine ("stdout", "Created JSON file for *Coll/*File");
     }
+    writeLine ("stdout", "Finished processing collection *Coll");
   }
 }
-INPUT *Coll = "/$rodsZoneClient/home/$userNameClient/Reports", *Res = 'demoResc'
+INPUT *Coll = "/$rodsZoneClient/home/$userNameClient/stage", *Res = 'LTLResc'
 OUTPUT ruleExecOut

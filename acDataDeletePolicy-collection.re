@@ -1,4 +1,4 @@
-acDataDeletePolicy {ON($objPath like “/$rodsZoneClient/home/$userNameClient/sensor/*”) {
+acDataDeletePolicy {ON($objPath like “/Mauna/home/atmos/sensor/*”) {
   msiDeleteDisallowed; 
   } 
 }
