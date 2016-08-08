@@ -1,13 +1,5 @@
-surveyArchive = main38
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archives"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_VERSIONS = "Versions"
-GLOBAL_AUDIT_PERIOD = "365"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_STORAGE = "LTLResc"
-main38 {
+surveyArchive {
+  racGlobalSet ();
 # rac-surveyArchive.r
 # Policy38
 # generate survey of the collection *Archive
@@ -39,6 +31,22 @@ main38 {
   }
   racSaveFile ("Archive-CIRA", *Archive);
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racSaveFile (*File, *Rep) {
 # policy function to write standard out to *File in collection GLOBAL_REPORTS
   *Colh = GLOBAL_ACCOUNT ++ "/*Rep";

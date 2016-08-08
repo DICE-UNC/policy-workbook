@@ -1,12 +1,16 @@
-setAuditPeriod = main8
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_STORAGE = "LTLResc"
-main8 {
+setAuditPeriod {
+  racGlobalSet ();
 # rac-setReportAuditPeriod.r
 # Policy8
-# set default value for Archive-Report on the collection *Rep
+# set default value for Archive-Report on an archive
+# set default value for Repository-Report on GLOBAL_REPOSITORY
 # create Reports collection if needed
+  *Doc = "Archive-PAA";
+  *Metan = "Archive-Report";
+  if (*Rep == GLOBAL_REPOSITORY) {
+    *Metan = "Repository-Report";
+    *Doc = "Archive-RAA";
+  }
   *Archive = GLOBAL_ACCOUNT ++ "/*Rep";
   *Q2 = select count(COLL_ID) where COLL_NAME = *Archive;
   foreach (*R2 in *Q2) { *Num = *R2.COLL_ID; }
@@ -16,24 +20,40 @@ main8 {
         writeLine("stdout","Could not create *Archive collection");
       }  # end of check on status
   }
-# check that Archive-Report attribute is defined on collection *Archive
+# check that  attribute is defined on collection *Archive
   *Period = str(double(*NumDays) * 3600. * 24.);
-  *Q3 = select count(META_COLL_ATTR_ID) where COLL_NAME = *Archive and META_COLL_ATTR_NAME = 'Archive-Report';
+  *Q3 = select count(META_COLL_ATTR_ID) where COLL_NAME = *Archive and META_COLL_ATTR_NAME = *Metan;
   foreach (*R3 in *Q3) {*Num1 = *R3.META_COLL_ATTR_ID;}
   if (*Num1 !=  "0" ) {
-    *Q4 = select META_COLL_ATTR_VALUE, META_COLL_ATTR_UNITS where COLL_NAME = *Archive and META_COLL_ATTR_NAME = 'Archive-Report';
+    *Q4 = select META_COLL_ATTR_VALUE, META_COLL_ATTR_UNITS where COLL_NAME = *Archive and META_COLL_ATTR_NAME = *Metan;
     foreach (*R4 in *Q4) {
       *Val = *R4.META_COLL_ATTR_VALUE;
       *Units = *R4.META_COLL_ATTR_UNITS;
-      deleteAVUMetadataFromColl (*Archive, "Archive-Report", *Val, *Units, *Stat);
+      deleteAVUMetadataFromColl (*Archive, *Metan, *Val, *Units, *Stat);
     }
   }
 # add default update period to collection
   msiGetSystemTime (*Tim, "human");
-  addAVUMetadataToColl (*Archive, "Archive-Report", *Period, "", *Stat);
-  writeLine ("stdout", "Set Archive-Report metadata value to *Period for collection *Archive on *Tim");
-  racWriteManifest ("Archive-PAA", *Rep, "stdout");
+  addAVUMetadataToColl (*Archive, *Metan, *Period, "", *Stat);
+  writeLine ("stdout", "Set *Metan metadata value to *Period seconds for collection *Archive on *Tim");
+  racWriteManifest (*Doc, *Rep, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 deleteAVUMetadataFromColl (*Coll, *N, *V, *U, *S) {
 # work around, need micro-service to delete triples from collections
   msiAddKeyVal (*Kvp, *N, *V);

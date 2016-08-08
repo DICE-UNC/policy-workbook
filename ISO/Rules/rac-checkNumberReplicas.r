@@ -1,9 +1,5 @@
-numberReplicas = main27
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_STORAGE = "LTLResc"
-main27 {
+numberReplicas {
+  racGlobalSet ();
 # rac-checkNumberReplicas.r
 # Policy27
 # check the number of replicas in the collection GLOBAL_REPOSITORY and *Archive
@@ -51,6 +47,22 @@ main27 {
   }
   racWriteManifest ("Archive-RCA", GLOBAL_REPOSITORY, "stdout");  
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racWriteManifest( *OutFile, *Rep, *Source ) {
 # create manifest file
   *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;

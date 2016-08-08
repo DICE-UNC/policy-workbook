@@ -1,13 +1,8 @@
-verifyMetadata = main43
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archives"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_SIPS = "SIPS"
-GLOBAL_STORAGE = "LTLResc"
-main43 {
+verifyMetadata {
+  racGlobalSet ();
 # Policy43
 # rac-verifyMetadata.r
-# Use the attribute *Type to determine whether working with GLOBAL_SIPS ore GLOBAL_ARCHIVES
+# Use the attribute *Type to determine whether working with GLOBAL_SIPS or GLOBAL_ARCHIVES
 # Compare the metadata attributes on the GLOBAL_SIPS or GLOBAL_ARCHIVES collection 
 # and verify they are present on each SIP or AIP
   msiGetSystemTime (*Tim, "human");
@@ -82,6 +77,22 @@ main43 {
   }
   racWriteManifest (*Rep, *Archive, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racWriteManifest( *OutFile, *Rep, *Source ) {
 # create manifest file
   *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;

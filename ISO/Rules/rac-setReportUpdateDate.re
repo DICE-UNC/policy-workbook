@@ -1,13 +1,7 @@
-acPostProcForPut = main2
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_AUDIT_PERIOD = "365"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_VERSIONS = "Versions"
-main2 {
+acPostProcForPut {
+  racGlobalSet ();
 # rac-setReportUpdateDate.re
-# Policy2
+# Policy26
 # check whether a file has been put into GLOBAL_REPORTS and version the file
   *Path = $objPath;
   msiSplitPath (*Path, *Coll, *File);

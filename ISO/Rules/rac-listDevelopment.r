@@ -1,10 +1,5 @@
-listDevelopment = main12
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_STORAGE = "LTLResc"
-main12 {
+listDevelopment {
+  racGlobalSet ();
 # rac-listDevelopment.r
 # Policy12
 # list the development courses taken by repository staff, organized by roles
@@ -34,6 +29,22 @@ main12 {
   }
   racWriteManifest ("Archive-SEA", GLOBAL_REPOSITORY, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 splitPathByKey(*Name, *Delim, *Head, *Tail) {
 # construct a path split function
   *L = strlen(*Name);

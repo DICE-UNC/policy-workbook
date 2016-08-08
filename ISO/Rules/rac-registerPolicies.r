@@ -1,13 +1,5 @@
-registerPolicies = main16
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_AUDIT_PERIOD = "365"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_RULES = "Rules"
-GLOBAL_STORAGE = "LTLResc"
-GLOBAL_VERSIONS = "Versions"
-main16 {
+registerPolicies {
+  racGlobalSet ();
 # rac-registerPolicies.r
 # register a rule file into GLOBAL_ACCOUNT/GLOBAL_REPOSITORY/GLOBAL_RULES 
 # create a version in GLOBAL_ACCOUNT/GLOBAL_REPOSITORY/GLOBAL_RULES/GLOBAL_VERSIONS
@@ -27,6 +19,22 @@ main16 {
   writeLine ("stdout", "Update rule *File on *Timef");
   racWriteManifest ("Archive-RAA", GLOBAL_REPOSITORY, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racWriteManifest( *OutFile, *Rep, *Source ) {
 # create manifest file
   *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;

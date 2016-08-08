@@ -1,10 +1,5 @@
-acPostProcForPut = main1
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_VERSIONS = "Versions"
-main1 {
+acPostProcForPut (
+  racGlobalSet();
 # rac-storeReportVersion.re
 # Policy1 
 # check whether a file has been put into GLOBAL_ACCOUNT/GLOBAL_REPOSITORY/GLOBAL_REPORTS and version the file

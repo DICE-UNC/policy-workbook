@@ -1,17 +1,11 @@
-checkSIP = main51
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archives"
-GLOBAL_AIPS = "AIPS"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_SIPS = "SIPS"
-GLOBAL_STORAGE = "LTLResc"
-main51 {
+checkSIP {
+  racGlobalSet ();
 # check a SIP for compliance with preservation policies
 # rac-checkSIP.r
   *Coll = GLOBAL_ACCOUNT ++ "/*Archive/" ++ GLOBAL_SIPS;
   *Path = "*Coll/*File";
   msiGetSystemTime (*Tim, "human");
+  writeLine ("stdout", "Check SIP *Path for compliance on *Tim");
   *Cmply = "1";
 # check for viruses
   racGetAVUMetadata (*Archive, *Path, "Archive-CheckVirus", "0", *Val2);
@@ -56,7 +50,24 @@ main51 {
     if (*S8 == "1") { *Cmply = "8"; }
   }
   addAVUMetadata (*Path, "Audit-Comply", *Cmply, *Tim, *Stat);
+  racWriteManifest ("Archive-PAA", *Archive, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racGetAVUMetadata (*Archive, *Coll, *Name, *Cont, *Val) {
 # policy function to verify existence and retrieve attribute from a collection
 # send e-mail if attribute is missing
@@ -66,7 +77,7 @@ racGetAVUMetadata (*Archive, *Coll, *Name, *Cont, *Val) {
   foreach (*R1 in *Q1) { *Num = *R1.META_COLL_ATTR_VALUE; }
   if (*Num > "0") {
     *Q2 = select META_COLL_ATTR_VALUE where COLL_NAME = *Coll and META_COLL_ATTR_NAME = *Name;
-    foreach (*R2 in *Q2) { *Val = *R2.META_COLL_ATTR_NAME; }
+    foreach (*R2 in *Q2) { *Val = *R2.META_COLL_ATTR_VALUE; }
   } else {
     if (*Cont == "1") {
       writeLine ("stdout", "Did not find required metadata");

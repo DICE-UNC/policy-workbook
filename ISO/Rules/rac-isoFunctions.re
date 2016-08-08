@@ -376,6 +376,15 @@ modAVUMetadata (*Path, *Attname, *Attvalue, *Aunit, *Status) {
   addAVUMetadata (*Path, *Attname, *Attvalue, *Aunit, *Status)
 }
 
+racCheckArchive (*Archive, *Stat) {
+# check whether a valid archive is specified
+  *Coll = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY;
+  *Q1 = select count(META_COLL_ATTR_ID) where COLL_NAME = *Coll and META_COLL_ATTR_NAME = "Repository-Archives" and META_COLL_ATTR_VALUE = *Archive;
+  *Stat = "1";
+  foreach (*R1 in *Q1) { *Num = *R1.META_COLL_ATTR_ID; }
+  if (*Num >= "1") {*Stat = "0"; }
+}
+
 racCheckMsg (*Msg, *Msgt) {
 # transform message to remove all minus signs
   *L = strlen(*Msg);
@@ -427,11 +436,11 @@ racDupCheck (*File, *Coll, *Archive, *S8) {
 racFindRepColl (*File, *Rep) {
 # find the collection that houses a report
 # input parameter is the name of the report that is checked
-# list of generated reports that are not archive specific and are manifests
-  *List1 = list("EA", "ERCSA", "INTA", "NPRA", "RAA", "RCA", "SEA");
-# list of generated reports that are archive specific and are manifests
-  *List2 = list("AFA", "AIPCRA", "CINCA", "IPA", "PAA", "SIA", "SIPCRA", "TA");
-  *Listg1 = join_list(*List1, *List2);
+# list of reports that are not archive specific and are manifests
+  *List1 = list("DIRA", "ERR", "NPRA", "PL", "RAA", "RCA", "SEA");
+# list of reports that are archive specific and are manifests
+  *List3 = list("AIPCRA", "ALRA", "BDA", "INTA", "IPA", "PAA", "SIA", "SIPCRA");
+  *Listg1 = join_list(*List1, *List3);
 # determine which collection holds the report
   *Rep = GLOBAL_REPORTS;
   splitPathByKey(*File, ".", *Head, *End);
@@ -495,7 +504,7 @@ racGetAVUMetadata (*Archive, *Coll, *Name, *Cont, *Val) {
   foreach (*R1 in *Q1) { *Num = *R1.META_COLL_ATTR_VALUE; }
   if (*Num > "0") {
     *Q2 = select META_COLL_ATTR_VALUE where COLL_NAME = *Coll and META_COLL_ATTR_NAME = *Name;
-    foreach (*R2 in *Q2) { *Val = *R2.META_COLL_ATTR_NAME; }
+    foreach (*R2 in *Q2) { *Val = *R2.META_COLL_ATTR_VALUE; }
   } else {
     if (*Cont == "1") {
       writeLine ("stdout", "Did not find required metadata");
@@ -504,6 +513,24 @@ racGetAVUMetadata (*Archive, *Coll, *Name, *Cont, *Val) {
   }
 } 
  
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_IMAGES = "Images"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
+
 racIntegrityCheck (*File, *Coll, *Archive, *S7) {
 #  Policy function to check integrity of a SIP
   *Chk = "";
@@ -555,7 +582,7 @@ racNotify (*Archive, *Msg) {
     foreach (*R2 in *Q2) { *Add = *R2.META_COLL_ATTR_VALUE; }
     msiSendMail (*Add, "Response required, missing metadata", *Body);
     *Note = "Sent message about Missing metadata to *Add about *Body on *Tim";
-    writeLine ("stdout", "*Note");
+    writeLine ("stdout", "  *Note");
   } else {
     *Q3 = select META_COLL_ATTR_VALUE where COLL_NAME = *Col and META_COLL_ATTR_NAME = "Archive-Email";
     *Note = "";
@@ -564,7 +591,7 @@ racNotify (*Archive, *Msg) {
       *Note = *Note ++ "Sent message to *Add about *Msg on *Tim\n";
       msiSendStdoutAsEmail (*Add, *Msgt);
     }
-    writeLine ("stdout", "*Note");
+    writeLine ("stdout", "  *Note");
   }
 # log all notifications in Archive-PAA
   racWriteManifest ("Archive-PAA", *Archive, *Note);
@@ -725,6 +752,33 @@ META_DATA_ATTR_NAME = 'Audit-Date';
 # no delete of Audit-Date from versioned file is needed since copy does not copy metadata.
   }
   addAVUMetadata (*Path, "Audit-Date", *T, "", *Stat);
+}
+
+racSplitArchive (*Coll, *Archive) {
+# find the name of an archive in a collection path
+  *Head = GLOBAL_ACCOUNT ++ "/";
+  *La = strlen (*Head);
+  *Lc = strlen (*Coll);
+  *Archive = "";
+  for (*I = *La; *I < *Lc; *I=*I+1) {
+    *C = substr (*Coll, *I, *I+1);
+    if (*C == "/") {
+      *Archive = substr (*Coll, *La, *I);
+      break;
+    }
+  }
+# verify the name is correct
+  *Coll = *Head ++ GLOBAL_REPOSITORY;
+  *Q1 = select META_COLL_ATTR_VALUE where COLL_NAME = *Coll and META_COLL_ATTR_NAME = "Repository-Archives";
+  *Found = 0;
+  foreach (*R1 in *Q1) {
+    *Nam = *R1.META_COLL_ATTR_VALUE;
+    if (*Nam == *Archive) {
+      *Found = 1;
+      break;
+    }
+  }
+  if (*Found == 0) { *Archive = ""; }
 }
 
 racVerifyAuditReport (*Coll, *Rep, *Tim) {

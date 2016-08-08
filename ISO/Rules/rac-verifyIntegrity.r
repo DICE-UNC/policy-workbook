@@ -1,11 +1,5 @@
-verifyIntegrity = main29
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archives"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_STORAGE = "LTLResc"
-GLOBAL_MANIFESTS = "Manifests"
-main29 {
+verifyIntegrity {
+  racGlobalSet ();
 # Policy26
 # rac-verifyIntegrity.r
 # record files with a bad checksum and replace the bad files
@@ -35,11 +29,11 @@ delaycheck (*OutFile, *Res, *Colh, *Day, *NumReplicas) {
         *Chk = *r2.DATA_CHECKSUM;
         *Replnum = *r2.DATA_REPL_NUM;
         msiDataObjChksum("*Path", "forceChksum=++++replNum=*Replnum", *Chkf);
-        if(*Chk == "0") {
+        if(*Chk == "") {
           *Chk = *Chkf;
           writeLine ("stdout", "    File *Path for replica *Replnum was missing a checksum, created new value");
         }
-        if (*Chk != *Chkf) {
+        if (*Chk != *Chkf && *Chk != "") {
           writeLine ("stdout", "    Deleted *Path for replica *Replnum which has a bad checksum");
           msiDataObjUnlink("objPath=*Path++++replNum=*Replnum", *Status);
         }
@@ -54,6 +48,22 @@ delaycheck (*OutFile, *Res, *Colh, *Day, *NumReplicas) {
     }
   }
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racWriteManifest( *OutFile, *Rep, *Source ) {
 # create manifest file
   *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;

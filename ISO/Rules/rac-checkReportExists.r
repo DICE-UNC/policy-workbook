@@ -1,8 +1,5 @@
-checkreportexists = main5
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_VERSIONS = "Versions"
-main5 {
+checkreportexists {
+  racGlobalSet ();
 # rac-checkReportExists.r
 # Policy5
 # input parameter is the name of the report that is checked
@@ -20,6 +17,22 @@ main5 {
   *Date = timestrf(datetime(double(*Val)), "%Y %m %d");
   writeLine ("stdout", "Most recent version of *File is in collection *Coll and should be updated on *Date");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racFindRepColl (*File, *Rep) {
 # find the collection that houses a report
 # input parameter is the name of the report that is checked

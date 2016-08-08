@@ -1,12 +1,5 @@
-listMicroservices = main19
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_VERSIONS = "Versions"
-GLOBAL_STORAGE = "LTLResc"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_AUDIT_PERIOD = "365"
-main19 {
+listMicroservices {
+  racGlobalSet ();
 # rac-listMicroservices.r
 # Policy19
 # List micro-services
@@ -14,6 +7,22 @@ main19 {
   writeKeyValPairs ("stdout", *Kvpairs, ":");
   racSaveFile ("Archive-PMA", GLOBAL_REPOSITORY);
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racSaveFile (*File, *Rep) {
 # policy function to write standard out to *File in collection GLOBAL_REPORTS
   *Colh = GLOBAL_ACCOUNT ++ "/*Rep";

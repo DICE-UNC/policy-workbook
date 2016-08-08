@@ -1,10 +1,5 @@
-resetIPR = main34
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archives"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_STORAGE = "LTLResc"
-main34 {
+resetIPR {
+  racGlobalSet ();
 # Policy34
 # rac-resetIPR.r
 # identify the IPR owner and
@@ -13,7 +8,7 @@ main34 {
   *Q2a = select USER_ID where USER_NAME = GLOBAL_OWNER;
   foreach (*R2a in *Q2a) {*Uownid = *R2a.USER_ID; }
   *Coll = GLOBAL_ACCOUNT ++ "/*Rep";
-  *Q1 = select META_COLL_ATTR_VALUE where COLL_NAME = *Coll and META_COLL_ATTR_NAME = "Audit-IPR";
+  *Q1 = select META_COLL_ATTR_VALUE where COLL_NAME = *Coll and META_COLL_ATTR_NAME = "Archive-IPR";
   foreach (*R1 in *Q1) {
     *Nam = *R1.META_COLL_ATTR_VALUE;
     *Q2 = select USER_ID where USER_NAME = *Nam;
@@ -74,6 +69,22 @@ main34 {
   }
   racWriteManifest ("Archive-IPA", *Rep, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racWriteManifest( *OutFile, *Rep, *Source ) {
 # create manifest file
   *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;

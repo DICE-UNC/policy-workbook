@@ -1,15 +1,5 @@
-notifyError = main46
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archive"
-GLOBAL_AUDIT_PERIOD = "365"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_SIPS = "SIPS"
-GLOBAL_STORAGE = "LTLResc"
-GLOBAL_VERSIONS = "Versions"
-main46 {
+notifyError {
+  racGlobalSet ();
 # rac-notifyError.r
 # Policy46 is an enhancement to Policy40, rac-verifySource.r
 # check all files in GLOBAL_ACCOUNT/*Archive/GLOBAL_SIPS for presence of attributes in *List
@@ -37,6 +27,22 @@ main46 {
   if(*Ier == "1") { racNotify (*Archive, *Msg); }
   racSaveFile ("Archive-CINCA", *Archive);
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racNotify (*Archive, *Msg) {
 # Policy function to send notification
 # Email address is given by value of Archive-Email on GLOBAL_ACCOUNT/*Archive

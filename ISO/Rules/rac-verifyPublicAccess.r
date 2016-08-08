@@ -1,10 +1,10 @@
-verifyPublicAccess = main24
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_REPOSITORY = "Repository"
-main24 {
+verifyPublicAccess {
+  racGlobalSet ();
 # rac-verifyPublicAccess.r
 # Policy24
 # list the access permissions on the collection GLOBAL_REPOSITORY
+  msiGetSystemTime (*Tim, "human");
+  writeLine ("stdout", "Verify access permissions for reports on *Tim");
   *Coll = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY;
   *lacc.totalPersons = str(0);
   *Q1 = select COLL_OWNER_NAME, COLL_ID where COLL_NAME = "*Coll";
@@ -12,8 +12,8 @@ main24 {
     *CollID = *R1.COLL_ID;
     *Owner = *R1.COLL_OWNER_NAME;
   }
-  writeLine ("stdout", "Owner of *Coll is *Owner");
-  writeLine ("stdout", "Name            Number of access permissions");
+  writeLine ("stdout", "  Owner of *Coll is *Owner");
+  writeLine ("stdout", "  Name            Number of access permissions");
   *Q2 = select COLL_ACCESS_USER_ID, COLL_ACCESS_TYPE where COLL_ACCESS_COLL_ID = *CollID;
   foreach (*R2 in *Q2) {
     *Userid = *R2.COLL_ACCESS_USER_ID;
@@ -46,10 +46,47 @@ main24 {
   foreach (*L in *lacc) {
     *C1 = *L;
     *C2 = *lacc.*L;
-    if (strlen(*C1) < 8) {*C1 = "*C1\t";}
-    if (strlen(*C1) < 16) {*C1 = "*C1\t";}
-    writeLine("stdout", "*C1   *C2");
+    if (strlen(*L) < 6) {*C1 = "*C1\t";}
+    if (strlen(*L) < 14) {*C1 = "*C1\t";}
+    writeLine("stdout", "  *C1   *C2");
   }
+  racWriteManifest ("Archive-RAA", GLOBAL_REPOSITORY, "stdout"); 
+}
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
+racWriteManifest( *OutFile, *Rep, *Source ) {
+# create manifest file
+  *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;
+  *Res = GLOBAL_STORAGE;
+  isColl (*Coll, "stdout", *Status);
+  isData (*Coll, *OutFile, *Status);
+  *Lfile = "*Coll/*OutFile";
+  if (*Status == "0") {
+# create manifest file
+    *Dfile = "destRescName=*Res++++forceFlag=";
+    msiDataObjCreate(*Lfile, *Dfile, *L_FD);
+    msiDataObjClose (*L_FD, *Status);
+  }
+# update manifest file with information from *Source
+  msiDataObjOpen("objPath=*Lfile++++openFlags=O_RDWR", *L_FD);
+  msiDataObjLseek(*L_FD, "0", "SEEK_END", *Status);
+  msiDataObjWrite(*L_FD, *Source, *Wlen);
+  msiDataObjClose(*L_FD, *Status);
+  msiDataObjRepl(*Lfile, "updateRepl=++++verifyChksum=", *Stat);
 }
 INPUT null
 OUTPUT ruleExecOut

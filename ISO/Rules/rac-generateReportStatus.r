@@ -1,53 +1,58 @@
-generateReportStatus = main7
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_AUDIT_PERIOD = "365"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_STORAGE = "LTLResc"
-GLOBAL_VERSIONS = "Versions"
-main7 {
+generateReportStatus {
+  racGlobalSet ();
 # rac-generateReportStatus.r
 # Policy7
 # Create report listing the status of all documents
-# list of generated reports that are not archive specific and are manifests
-  *List1 = list("EA", "ERCSA", "INTA", "NPRA", "RCA", "SEA");
-# list of generated reports that are not archive specific and are versioned
-  *List1v = list("AUPA", "BDA", "DIRA", "ILA", "PLA", "PMA", "PPA", "RAA", "SSA", "TSEA");
-# list of generated reports that are archive specific and are manifests
-  *List2 = list("AFA", "AIPCRA", "CINCA", "IPA", "PAA", "SIA", "SIPCRA", "TA");
-# list of generated reports that are archive specific and are versioned
-  *List2v = list("ALA", "ALRA", "ARA", "AURA", "CIRA", "DDA", "MA", "PMRA", "SAPA", "URA");
-# list of management reports that are not archive specific
-  *List3b = list("BPR", "BR", "CE", "CM", "CollP", "CP", "CR", "EAP", "FAR", "FR", "MS", "OP");
-  *List3a = list( "PIP", "PR", "PSP", "SE", "SOP", "SP", "SRF", "STFP", "TAR", "TC", "TW");
-# list of management reports that are archive specific
-  *List4 = list("AIP", "AU", "CFR", "CID", "DAR", "DCP", "DCR", "DD", "DIP", "HVO", "INP", "IP", "META", "SAR", "SIP", "SL", "SSR", "STAR");
+# list of reports that are not archive specific and are manifests
+  *List1 = list("DIRA", "ERR", "NPRA", "PL", "RAA", "RCA", "SEA");
+# list of reports that are not archive specific and are versioned
+  *List2a = list("APU", "BPR", "BR", "CE", "CM", "CollP", "CP", "CR", "EAP", "FAR", "FR", "IA", "ILA", "MS", "OP", "PIP");
+  *List2b = list("PMA", "PPA", "PPRS", "PR", "PSP", "QAR", "SE", "SOP", "SP", "SRF", "SSA", "STFP", "TAR", "TC", "TSE", "TW");
+# list of reports that are archive specific and are manifests
+  *List3 = list("AIPCRA", "ALRA", "BDA", "INTA", "IPA", "PAA", "SIA", "SIPCRA");
+# list of reports that are archive specific and are versioned
+  *List4a = list("AFA", "AIP", "ALA", "ARA", "AU", "ARUA", "CFR", "CID", "CINCA", "CIRA", "DAR", "DCP", "DCR", "DD", "DIDA");
+  *List4b = list("DIP", "HVOA", "IDCA", "INP", "IP", "MA", "META", "PMRA", "SAPA", "SAR", "SIP", "SL", "SSR", "STAR", "TRA", "URA");
+  writeLine ("stdout", "*List1 /n *List3");
+  *List2 = join_list(*List2a, *List2b);
+  *List4 = join_list(*List4a, *List4b);
   *Res = GLOBAL_STORAGE;
   *Home = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY;
   *Coll = "*Home/" ++ GLOBAL_REPORTS;
   msiGetSystemTime (*Tim, "human");
   writeLine ("stdout", "Status report for all management reports, generated on date *Tim");
-  *List3 = join_list (*List3a, *List3b);
-  *Listrr = join_list (*List1v, *List3);
-  printList("Management reports that are not archive specific", *Res, *Listrr, "stdout", *Coll);
+  printList("Reports that are not archive specific", *Res, *List2, "stdout", *Coll);
   *Collm = "*Home/" ++ GLOBAL_MANIFESTS;
   printList("Manifests that are not archive specific", *Res, *List1, "stdout", *Collm);
 # loop over the archive repositories and track reports
-  *Listra = join_list (*List2v, *List4);
   *Q1 = select META_COLL_ATTR_VALUE where COLL_NAME = *Home and META_COLL_ATTR_NAME = 'Repository-Archives';
   foreach (*R1 in *Q1) {
     *Archive = *R1.META_COLL_ATTR_VALUE;
     *Homea = GLOBAL_ACCOUNT ++ "/*Archive";
     *Coll = "*Homea/" ++ GLOBAL_REPORTS;
-    printList("Management reports that are archive specific", *Res, *Listra, "stdout", *Coll);
+    printList("Reports that are archive specific", *Res, *List4, "stdout", *Coll);
     *Collm = "*Homea/" ++ GLOBAL_MANIFESTS;
-    printList("Manifests that are archive specific", *Res, *List2, "stdout", *Collm);
+    printList("Manifests that are archive specific", *Res, *List3, "stdout", *Collm);
   }
   *Col = GLOBAL_REPOSITORY;
-  racSaveFile ("Archive-SSA", *Col);
+#  racSaveFile ("Archive-SSA", *Col);
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 printList (*Type, *Res, *Listr, *Lfile, *Coll) {
 # Loop over report list
   writeLine(*Lfile, "\nAnalysis of *Type for collection *Coll");

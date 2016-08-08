@@ -1,12 +1,5 @@
-listAttributes=main20
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_AUDIT_PERIOD = "365"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_STORAGE = "LTLResc"
-GLOBAL_VERSIONS = "Versions"
-main20 {
+listAttributes {
+  racGlobalSet ();
 # rac-listAttributes.r
 # Policy20
 # find all attributes used for preservation
@@ -26,14 +19,19 @@ main20 {
   foreach (*R0 in *Q0) {
     *Col = *R0.META_COLL_ATTR_VALUE;
     *Archive = GLOBAL_ACCOUNT ++ "/*Col";
+    *Q1 = select order(META_COLL_ATTR_NAME) where META_COLL_ATTR_NAME like 'Audit%' and COLL_NAME like '*Archive%';
+    foreach (*R1 in *Q1) {
+      *Nam = *R1.META_COLL_ATTR_NAME;
+      *Metac.*Nam = "Coll";
+    }
     *Qa = select order(META_COLL_ATTR_NAME) where COLL_NAME like "*Archive%" and META_COLL_ATTR_NAME like 'Archive%';
     foreach (*Ra in *Qa) {
       *Nam = *Ra.META_COLL_ATTR_NAME;
       *Metac.*Nam = "Coll";
     }
-    *Q1 = select order(META_DATA_ATTR_NAME) where META_DATA_ATTR_NAME like 'Audit%' and COLL_NAME like '*Archive%';
-    foreach (*R1 in *Q1) {
-      *Nam = *R1.META_DATA_ATTR_NAME;
+    *Q4 = select order(META_DATA_ATTR_NAME) where META_DATA_ATTR_NAME like 'Audit%' and COLL_NAME like '*Archive%';
+    foreach (*R4 in *Q4) {
+      *Nam = *R4.META_DATA_ATTR_NAME;
       *Metad.*Nam = "File";
     }
   }
@@ -50,6 +48,22 @@ main20 {
   foreach (*Nam in *Metau) { *Typ = *Metau.*Nam; writeLine("stdout", "*Typ      *Nam"); }
   racSaveFile ("Archive-PMRA", GLOBAL_REPOSITORY);
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racSaveFile (*File, *Rep) {
 # policy function to write standard out to *File in collection GLOBAL_REPORTS
   *Colh = GLOBAL_ACCOUNT ++ "/*Rep";

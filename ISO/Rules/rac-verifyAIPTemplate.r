@@ -1,16 +1,11 @@
-verifyAIPTemplate = main49
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archives"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_STORAGE = "LTLResc"
-main49 {
+verifyAIPTemplate {
+  racGlobalSet ();
 # Policy 49
 # rac-verifyAIPTemplate.r
 # verify that the AIP template is loaded and Archive-AIPTemplate is set
   msiGetSystemTime (*Tim, "human");
   *C = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY;
+  writeLine ("stdout", "Checking AIPTemplate on *Tim");
   *Q1 = select META_COLL_ATTR_VALUE where COLL_NAME = *C and META_COLL_ATTR_NAME = "Repository-Archives";
   foreach (*R1 in *Q1) {
     *Archive = *R1.META_COLL_ATTR_VALUE;
@@ -20,7 +15,7 @@ main49 {
     foreach (*R2 in *Q2) {
       *Num = *R2.META_COLL_ATTR_VALUE;
       if(*Num == "0") {
-        *Msg = "Missing attribute for Archive-AIPTemplate on *Coll on *Tim";
+        *Msg = "Missing attribute for Archive-AIPTemplate on *Coll";
         racNotify (*Archive, *Msg);
       } else {
         *Q3 = select META_COLL_ATTR_VALUE where COLL_NAME = *Coll and META_COLL_ATTR_NAME = "Archive-AIPTemplate";
@@ -31,8 +26,8 @@ main49 {
           foreach (*R4 in *Q4) {
             *N = *R4.DATA_ID;
             if (*N == "0") {
-              *Msg = "Missing *File in *Ca on *Tim";
-              writeLine ("stdout", "*Msg");
+              *Msg = "Missing *File in *Ca";
+              writeLine ("stdout", "  *Msg");
               racNotify (*Archive, *Msg);
             }
           }           
@@ -40,7 +35,24 @@ main49 {
       }
     }
   }
+  racWriteManifest ("Archive-RAA", GLOBAL_REPOSITORY, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racCheckMsg (*Msg, *Msgt) {
 # transform message to remove all minus signs
   *L = strlen(*Msg);

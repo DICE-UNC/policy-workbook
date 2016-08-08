@@ -1,18 +1,8 @@
-verifyAttribute = main47
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archives"
-GLOBAL_AUDIT_PERIOD = "365"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_SIPS = "SIPS"
-GLOBAL_STORAGE = "LTLResc"
-GLOBAL_VERSIONS = "Versions"
-main47 {
+verifyAttribute {
+  racGlobalSet ();
 # rac-verifyAttribute.r
 # Policy47 is a modification to Policy43, rac-verifyMetadata.r to send an error message
-# Use the attribute *Type to determine whether working with GLOBAL_SIPS ore GLOBAL_ARCHIVES
+# Use the attribute *Type to determine whether working with GLOBAL_SIPS or GLOBAL_ARCHIVES
 # Compare the metadata attributes on the GLOBAL_SIPS or GLOBAL_ARCHIVES collection
 # and verify they are present on each SIP or AIP
   msiGetSystemTime (*Tim, "human");
@@ -91,6 +81,22 @@ main47 {
   if(*Ier == "1") { racNotify(*Archive, "See *Rep for missing attributes"); }
   racWriteManifest (*Rep, *Archive, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racNotify (*Archive, *Msg) {
 # Policy function to send notification
 # Email address is given by value of Archive-Email on GLOBAL_ACCOUNT/*Archive
@@ -249,28 +255,6 @@ racWriteManifest( *OutFile, *Rep, *Source ) {
   msiDataObjClose(*L_FD, *Status);
   msiDataObjRepl(*Lfile, "updateRepl=++++verifyChksum=", *Stat);
 }
-
-racWriteManifest( *OutFile, *Rep, *Source ) {
-# create manifest file
-  *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;
-  *Res = GLOBAL_STORAGE;
-  isColl (*Coll, "stdout", *Status);
-  isData (*Coll, *OutFile, *Status);
-  *Lfile = "*Coll/*OutFile";
-  if (*Status == "0") {
-# create manifest file
-    *Dfile = "destRescName=*Res++++forceFlag=";
-    msiDataObjCreate(*Lfile, *Dfile, *L_FD);
-    msiDataObjClose (*L_FD, *Status);
-  }
-# update manifest file with information from *Source
-  msiDataObjOpen("objPath=*Lfile++++openFlags=O_RDWR", *L_FD);
-  msiDataObjLseek(*L_FD, "0", "SEEK_END", *Status);
-  msiDataObjWrite(*L_FD, *Source, *Wlen);
-  msiDataObjClose(*L_FD, *Status);
-  msiDataObjRepl(*Lfile, "updateRepl=++++verifyChksum=", *Stat);
-}
-
 INPUT *Archive=$"Archive-A", *Type=$"SIP"
 OUTPUT ruleExecOut
 

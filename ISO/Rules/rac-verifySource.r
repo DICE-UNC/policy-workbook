@@ -1,24 +1,15 @@
-verifySource = main40
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_AIPS = "AIPS"
-GLOBAL_AUDIT_PERIOD = "365"
-GLOBAL_OWNER = "rwmoore"
-GLOBAL_REPORTS = "Reports"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_SIPS = "SIPS"
-GLOBAL_STORAGE = "LTLResc"
-GLOBAL_VERSIONS = "Versions"
-main40 {
+verifySource {
+  racGlobalSet ();
 # rac-verifySource.r
 # Policy40
-# check all files within the GLOBAL_SIPS or GLOBAL_AIPS collection for presence of attributes in *List
+# check all files within the GLOBAL_SIPS or GLOBAL_ARCHIVES collection for presence of attributes in *List
   if (*Type == "AIP" || *Type == "SIP") {
   } else {
     writeLine ("stdout", "allowed values for \*Type are AIP or SIP");
     fail;
   }
   *Coll = GLOBAL_ACCOUNT ++ "/*Archive/" ++ GLOBAL_SIPS;
-  if (*Type == "AIP") { *Coll = GLOBAL_ACCOUNT ++ "/*Archive/" ++ GLOBAL_AIPS; }
+  if (*Type == "AIP") { *Coll = GLOBAL_ACCOUNT ++ "/*Archive/" ++ GLOBAL_ARCHIVES; }
   *List = list("Audit-Source", "Audit-Depositor");
   msiGetSystemTime (*Tim, "human");
   writeLine("stdout", "Check files in *Coll on date *Tim for attributes in *List");
@@ -36,6 +27,22 @@ main40 {
   }
   racSaveFile ("Archive-CINCA", *Archive);
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racSaveFile (*File, *Rep) {
 # policy function to write standard out to *File in collection GLOBAL_REPORTS
   *Colh = GLOBAL_ACCOUNT ++ "/*Rep";

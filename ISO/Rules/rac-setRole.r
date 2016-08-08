@@ -1,14 +1,11 @@
-setRole = main9
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_REPOSITORY = "Repository"
-GLOBAL_STORAGE = "LTLResc"
-main9 {
+setRole {
+  racGlobalSet ();
 # rac-setRole.r
 # Policy9
 # For a specified user, set their repository role
 # Define attribute Repository_role with value from 
 # "Archive-manager", "Archive-archivist", "Archive-admin", "Archive-IT"
+  msiGetSystemTime (*Tim, "human");
   *Att = "Repository-Role";
 # verify role name
   *Roles = list( "Archive-manager", "Archive-archivist", "Archive-admin", "Archive-IT");
@@ -19,6 +16,7 @@ main9 {
       break;
     }
   }
+  writeLine ("stdout", "Set repository role for a staff member on *Tim");
   if (*Found == 1) {
     *Q1 = select count(META_USER_ATTR_ID) where USER_NAME = *Name and META_USER_ATTR_NAME = *Att;
     foreach (*R1 in *Q1) {*Num = *R1.META_USER_ATTR_ID;}
@@ -32,13 +30,29 @@ main9 {
     }
     msiAddKeyVal(*Keyval, *Att, *Val);
     msiAssociateKeyValuePairsToObj(*Keyval, *Name, "-u");
-    writeLine ("stdout", "Added role *Val to *Name");
-    racWriteManifest ("Archive-RAA", GLOBAL_REPOSITORY, "stdout");
+    writeLine ("stdout", "  Added role *Val to *Name");
   } else {
-    writeLine ("stdout", "Valid role was not specified, INPUT had value *Val");
-    writeLine ("stdout", "Entry must be one of *Roles");
+    writeLine ("stdout", "  Valid role was not specified, INPUT had value *Val");
+    writeLine ("stdout", "  Entry must be one of *Roles");
   }
+  racWriteManifest ("Archive-RAA", GLOBAL_REPOSITORY, "stdout");
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racWriteManifest( *OutFile, *Rep, *Source ) {
 # create manifest file
   *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;

@@ -1,13 +1,9 @@
-removeAccess = main30
-GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
-GLOBAL_ARCHIVES = "Archives"
-GLOBAL_MANIFESTS = "Manifests"
-GLOBAL_STORAGE = "LTLResc"
-main30 {
+removeAccess {
+  racGlobalSet ();
 # Policy30
 # rac-removeAccess.r
 # set access permission to null for specified account
-# records changes in a manifest file, Archive-TA
+# records changes in a manifest file, Archive-ALRA
   *Home = GLOBAL_ACCOUNT;
   *Coll = "*Home/*Rep/" ++ GLOBAL_ARCHIVES;
 # check if access exists on collection
@@ -52,8 +48,24 @@ main30 {
       }
     }
   }
-  racWriteManifest( "Archive-TA", *Rep, "stdout" );
+  racWriteManifest( "Archive-ALRA", *Rep, "stdout" );
 }
+racGlobalSet = maing
+GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
+GLOBAL_ARCHIVES = "Archives"
+GLOBAL_AUDIT_PERIOD = "365"
+GLOBAL_DIPS = "DIPS"
+GLOBAL_EMAIL = "rwmoore@renci.org"
+GLOBAL_MANIFESTS = "Manifests"
+GLOBAL_METADATA = "Metadata"
+GLOBAL_OWNER = "rwmoore"
+GLOBAL_REPORTS = "Reports"
+GLOBAL_REPOSITORY = "Repository"
+GLOBAL_RULES = "Rules"
+GLOBAL_SIPS = "SIPS"
+GLOBAL_STORAGE = "LTLResc"
+GLOBAL_VERSIONS = "Versions"
+maing{}
 racWriteManifest( *OutFile, *Rep, *Source ) {
 # create manifest file
   *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;
