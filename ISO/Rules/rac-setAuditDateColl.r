@@ -1,24 +1,38 @@
-inpMetadata {
+setAuditDateColl {
   racGlobalSet ();
-# Policy42
-# rac-inputMetadata.r
-# load pipe-delimited metadata onto records
-# assume the metadata record has the record name with an extension -meta
+# Policy80
+# rac-setAuditDateColl.r
+# set the attribute Audit-Date on files in a collection for file missing an Audit-Date
+  *Rep = "";
+  *Doc = "Archive-PAA";
+  splitPathByKey (*RelColl, "/", *Archive, *Tail);
+  if (*Archive == GLOBAL_REPOSITORY) { *Rep = *Archive; }
+  else {
+    racCheckArchive (*Archive, *Stat);
+    if (*Stat == "0") { *Rep = *Archive; }
+  }
   msiGetSystemTime (*Tim, "human");
-  *Coll = GLOBAL_ACCOUNT ++ "/*Archive/" ++ GLOBAL_METADATA;
-  if (*Col != "") { *Coll = "*Coll/*Col"; }
+  *Coll = GLOBAL_ACCOUNT ++ "/*RelColl";
+  writeLine ("stdout", "Set the attribute Audit-Date on files in *Coll on *Tim");
+  msiGetSystemTime (*Tim, "unix");
+  *Period = double(*Days) * 3600. * 24.;
+  *New = str(double(*Tim) + *Period);
   *Q1 = select DATA_NAME, COLL_NAME where COLL_NAME like "*Coll%";
   foreach (*R1 in *Q1) {
-    *C = *R1.COLL_NAME;
-    *F = *R1.DATA_NAME;
-    splitPathByKey (*F, "-", *Head, *Tail);
-    if (*Tail == "meta") {
-      *Path = "*C/*F";
-      msiLoadMetadataFromDataObj(*Path, *Status);
-      writeLine ("stdout", "Loaded metadata on SIPS listed in *Path on *Tim");
+    *File = *R1.DATA_NAME;
+    *Col = *R1.COLL_NAME;
+    *Path = "*Col/*File";
+    *Q2 = select count(META_DATA_ATTR_ID) where DATA_NAME = *File and COLL_NAME = *Col and META_DATA_ATTR_NAME = "Audit-Date";
+    foreach (*R2 in *Q2) {
+      *Num = *R2.META_DATA_ATTR_ID;
+      if (*Num == "0" ) {
+        addAVUMetadata (*Path, "Audit-Date", *New, "", *Status);
+        *Date = timestrf(datetime(double(*New)), "%Y %m %d");
+        writeLine ("stdout", "  New Audit-Date for *Path is *Date");
+      }
     }
   }
-  racWriteManifest("Archive-SIPCRA", *Archive, "stdout");
+  if (*Rep != "") { racWriteManifest (*Doc, *Archive, "stdout"); }
 }
 racGlobalSet = maing
 GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
@@ -36,6 +50,14 @@ GLOBAL_SIPS = "SIPS"
 GLOBAL_STORAGE = "LTLResc"
 GLOBAL_VERSIONS = "Versions"
 maing{}
+racCheckArchive (*Archive, *Stat) {
+# check whether a valid archive is specified
+  *Coll = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY;
+  *Q1 = select count(META_COLL_ATTR_ID) where COLL_NAME = *Coll and META_COLL_ATTR_NAME = "Repository-Archives" and META_COLL_ATTR_VALUE = *Archive;
+  *Stat = "1";
+  foreach (*R1 in *Q1) { *Num = *R1.META_COLL_ATTR_ID; }
+  if (*Num >= "1") {*Stat = "0"; }
+}
 splitPathByKey(*Name, *Delim, *Head, *Tail) {
 # construct a path split function
   *L = strlen(*Name);
@@ -70,5 +92,6 @@ racWriteManifest( *OutFile, *Rep, *Source ) {
   msiDataObjClose(*L_FD, *Status);
   msiDataObjRepl(*Lfile, "updateRepl=++++verifyChksum=", *Stat);
 }
-INPUT *Col=$"", *Archive=$"Archive-A"
+
+INPUT *RelColl=$"Archive-A/Reports", *Days=$"365"
 OUTPUT ruleExecOut

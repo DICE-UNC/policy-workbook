@@ -59,6 +59,9 @@ verifyReportUpdates {
       else { writeLine("stdout", "Report *Coll/*File is up to date"); }
     }
   }
+  *F = "Archive-PAA";
+  if (*Rep == GLOBAL_REPOSITORY) { *F = "Archive-RAA"; }
+  racWriteManifest (*F, *Rep, "stdout");
 }
 racsetColl (*List1, *Head, *Repv, *Colv, *Rep, *Col, *Found) {
 # Policy function to check which collection holds a file
@@ -116,6 +119,26 @@ splitPathByKey(*Name, *Delim, *Head, *Tail) {
       break;
     }
   }
+}
+racWriteManifest( *OutFile, *Rep, *Source ) {
+# create manifest file
+  *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;
+  *Res = GLOBAL_STORAGE;
+  isColl (*Coll, "stdout", *Status);
+  isData (*Coll, *OutFile, *Status);
+  *Lfile = "*Coll/*OutFile";
+  if (*Status == "0") {
+# create manifest file
+    *Dfile = "destRescName=*Res++++forceFlag=";
+    msiDataObjCreate(*Lfile, *Dfile, *L_FD);
+    msiDataObjClose (*L_FD, *Status);
+  }
+# update manifest file with information from *Source
+  msiDataObjOpen("objPath=*Lfile++++openFlags=O_RDWR", *L_FD);
+  msiDataObjLseek(*L_FD, "0", "SEEK_END", *Status);
+  msiDataObjWrite(*L_FD, *Source, *Wlen);
+  msiDataObjClose(*L_FD, *Status);
+  msiDataObjRepl(*Lfile, "updateRepl=++++verifyChksum=", *Stat);
 }
 INPUT *Archive=$"Archive-A", *File=$"Archive-AU.docx"
 OUTPUT ruleExecOut

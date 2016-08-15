@@ -5,7 +5,7 @@ getProcessfromIndex {
 # invoke an indexing service encapsulated in a Docker container through the Discovery Environment
 # return the state information changed by a process.
   msiGetSystemTime(*Tim, "human");
-  writeLine ("stdout", "Search index for state information change by a processon on *Tim");
+  writeLine ("stdout", "Search index for state information change by a process on *Tim");
   *Cmd = "command being executed through Docker";
   *Args = "arg1 arg2".
   msiExecCmd(*Cmd, *Args, "", "", "", *Result);

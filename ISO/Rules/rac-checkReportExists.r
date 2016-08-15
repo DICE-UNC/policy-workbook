@@ -16,6 +16,7 @@ checkreportexists {
   }
   *Date = timestrf(datetime(double(*Val)), "%Y %m %d");
   writeLine ("stdout", "Most recent version of *File is in collection *Coll and should be updated on *Date");
+  racWriteManifest ("Archive-PAA", *Archive, "stdout");
 }
 racGlobalSet = maing
 GLOBAL_ACCOUNT = "/lifelibZone/home/rwmoore"
@@ -33,6 +34,26 @@ GLOBAL_SIPS = "SIPS"
 GLOBAL_STORAGE = "LTLResc"
 GLOBAL_VERSIONS = "Versions"
 maing{}
+racWriteManifest( *OutFile, *Rep, *Source ) {
+# create manifest file
+  *Coll = GLOBAL_ACCOUNT ++ "/*Rep/" ++ GLOBAL_MANIFESTS;
+  *Res = GLOBAL_STORAGE;
+  isColl (*Coll, "stdout", *Status);
+  isData (*Coll, *OutFile, *Status);
+  *Lfile = "*Coll/*OutFile";
+  if (*Status == "0") {
+# create manifest file
+    *Dfile = "destRescName=*Res++++forceFlag=";
+    msiDataObjCreate(*Lfile, *Dfile, *L_FD);
+    msiDataObjClose (*L_FD, *Status);
+  }
+# update manifest file with information from *Source
+  msiDataObjOpen("objPath=*Lfile++++openFlags=O_RDWR", *L_FD);
+  msiDataObjLseek(*L_FD, "0", "SEEK_END", *Status);
+  msiDataObjWrite(*L_FD, *Source, *Wlen);
+  msiDataObjClose(*L_FD, *Status);
+  msiDataObjRepl(*Lfile, "updateRepl=++++verifyChksum=", *Stat);
+}
 racFindRepColl (*File, *Rep) {
 # find the collection that houses a report
 # input parameter is the name of the report that is checked

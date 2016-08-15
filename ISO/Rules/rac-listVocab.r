@@ -3,7 +3,7 @@ listVocab {
 # Policy78
 # rac-listVocab.r
 # retrieve a copy of the vocabulary used by an Archive
-  msiGetSystemTime (*Tim, "humnan");
+  msiGetSystemTime (*Tim, "human");
   *Coll = GLOBAL_ACCOUNT ++ "/*Archive/" ++ GLOBAL_ARCHIVES;
   racGetAVUMetadata (*Archive, *Coll, "Archive-Ontology", *Cont, *Vocab);
   racReservedVocabCheck (*File, *Coll, *Archive, *S6) {
