@@ -415,6 +415,19 @@ racCheckNumReplicas (*Res, *Num) {
   *Flagd = "objPath=*Path";
   msiDataObjUnlink (*Flagd, *Status);
 }
+ racCreateHandle (*Coll, *File) {
+# create a handle for a file
+  *Cmd = "create_handle.sh";
+  *Uri = "irods%3A%2F%2Fees.renci.org%3A1247$objPath";
+  *Url = execCmdArg("https://dfcweb.datafed.org/idrop-web2/home/link?irodsURI=*Uri");
+  *Q1 = select DATA_ID where DATA_NAME = *File and COLL_NAME = *Coll;
+  foreach (*R1 in *Q1) { *Dataid = *R1.DATA_ID; }
+  *Args = "*Dataid *Url";
+  msiExecCmd(*Cmd, *Args, "null", "null", "null", *Result);
+  msiGetStdoutInExecCmdOut(*Result,*Oid);
+  *Path = "*Coll/*File";
+  addAVUMetadata (*Path, "Audit-Handle", *Oid, "", *Stat);
+}
 
 racDupCheck (*File, *Coll, *Archive, *S8) {
 # Policy function to check whether AIP already exists
@@ -431,6 +444,26 @@ racDupCheck (*File, *Coll, *Archive, *S8) {
   }
   if (*S8 != "1" ) { *S8 = "2"; }
   addAVUMetadata ("*Coll/*File", "Audit-CheckDup", *S8, *Tim, *Stat);
+
+}
+
+racFindRep (*Coll, *Rep) {
+# policy function to identify the repository referenced by the path name
+  *Colla = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY ++ "/" ++ GLOBAL_REPORTS;
+  *Rep = "";
+  if (*Coll == *Colla) { *Rep = GLOBAL_REPOSITORY; }
+  else {
+    *Colt = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY;
+    *Q1 = select META_COLL_ATTR_VALUE where COLL_NAME = *Colt and META_COLL_ATTR_NAME = "Repository-Archives"
+    foreach (*R1 in *Q1) {
+      *Nam = *R1.META_COLL_ATTR_VALUE;
+      *C = GLOBAL_ACCOUNT ++ "/*Nam/" ++ GLOBAL_REPORTS;
+      if (*Coll == *C) {
+        *Rep = *Nam;
+        break;
+      }
+    }
+  }
 }
 
 racFindRepColl (*File, *Rep) {
@@ -453,25 +486,6 @@ racFindRepColl (*File, *Rep) {
   }
 }
 
-racFindRep (*Coll, *Rep) {
-# policy function to identify the repository referenced by the path name
-  *Colla = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY ++ "/" ++ GLOBAL_REPORTS;
-  *Rep = "";
-  if (*Coll == *Colla) { *Rep = GLOBAL_REPOSITORY; }
-  else {
-    *Colt = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY;
-    *Q1 = select META_COLL_ATTR_VALUE where COLL_NAME = *Colt and META_COLL_ATTR_NAME = "Repository-Archives"
-    foreach (*R1 in *Q1) {
-      *Nam = *R1.META_COLL_ATTR_VALUE;
-      *C = GLOBAL_ACCOUNT ++ "/*Nam/" ++ GLOBAL_REPORTS;
-      if (*Coll == *C) {
-        *Rep = *Nam;
-        break;
-      }
-    }
-  }
-}
- 
 racFormatCheck (*File, *Coll, *Archive, *S4) {
 # Policy function to check the format of a SIP
 # Required format type is Archive-Format saved as an attribute on GLOBAL_SIPS

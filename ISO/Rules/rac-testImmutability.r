@@ -8,7 +8,7 @@ testImmutability {
 # migrate file, print out state
   msiGetSystemTime (*Tim, "human");
   *Coll = GLOBAL_ACCOUNT;
-  *File = "testRACfile";
+  *File = "tRFile";
   *Path = "*Coll/*File";
   *Flags = "forceFlag=";
   msiDataObjCreate (*Path, *Flags, *L_FD);
@@ -17,26 +17,27 @@ testImmutability {
   msiDataObjClose (*L_FD, *Status);
   msiDataObjChksum (*Path, "forceChksum=", *Chk);
   addAVUMetadata (*Path, "Audit-Handle", "123456789", "", *St);
-  printStat ("initial", *File, *Coll);
+  printStat ("For initial", *File, *Coll);
 # now delete a replica
   *Flags1 = "objPath=*Path++++replNum=1++++forceFlag=";
   msiDataObjUnlink (*Flags1, *Stat);
   if (*Stat != 0) { writeLine ("stdout", "      Attempt to delete a replica failed with *Stat"); }
-  printStat ("replica delete", *File, *Coll);
+  printStat ("After replica delete", *File, *Coll);
 # now replace replica
   msiDataObjRepl (*Path, "updateRepl=++++verifyChksum=", *stat);
   if (*stat != 0) { writeLine ("stdout", "    Attempt to replicate a file failed with *stat"); }
-  printStat ("replica create", *File, *Coll);
+  printStat ("After replica create", *File, *Coll);
 # now migrate file
   msiDataObjPhymv (*Path, "demoResc", "LTLResc", "", "", *stat);
   if (*stat != 0) { writeLine ("stdout", "    Attempt to migrate a file failed with *stat"); }
-  printStat ("file migrated", *File, *Coll);
+  printStat ("After file migrated", *File, *Coll);
   msiDataObjUnlink ("objPath=*Path++++forceFlag=", *Stat);
   racWriteManifest ("Archive-RAA", GLOBAL_REPOSITORY, "stdout");
 }
 printStat (*Pass, *File, *Coll) {
 #  print stats to stdout
   *Path = "*Coll/*File";
+  writeLine ("stdout", "  *Pass");
   *Q1 = select DATA_ID, DATA_CHECKSUM, DATA_COLL_ID, DATA_REPL_NUM, DATA_RESC_NAME, DATA_PATH where DATA_NAME = *File and COLL_NAME = *Coll;
   foreach (*R1 in *Q1) {
     *Id = *R1.DATA_ID;
@@ -45,15 +46,15 @@ printStat (*Pass, *File, *Coll) {
     *Rn = *R1.DATA_REPL_NUM;
     *Pt = *R1.DATA_PATH;
     *Drn = *R1.DATA_RESC_NAME;
-    writeLine ("stdout", "  For *Pass *Path, DATA_ID = *Id, DATA_COLL_ID = *Cn");
-    writeLine ("stdout", "  For *Pass *Path, DATA_CHECKSUM = *Cks");
-    writeLine ("stdout", "  For *Pass *Path, DATA_REPL_NUM = *Rn, DATA_RESC_NAME = *Drn");
-    writeLine ("stdout", "  For *Pass *Path, DATA_PATH = *Pt");
+    writeLine ("stdout", "    *Path, DATA_ID = *Id, DATA_COLL_ID = *Cn");
+    writeLine ("stdout", "    *Path, DATA_CHECKSUM = *Cks");
+    writeLine ("stdout", "    *Path, DATA_REPL_NUM = *Rn, DATA_RESC_NAME = *Drn");
+    writeLine ("stdout", "    *Path, DATA_PATH = *Pt");
   }
   *Q2 = select META_DATA_ATTR_VALUE where DATA_NAME = *File and COLL_NAME = *Coll and META_DATA_ATTR_NAME = "Audit-Handle";
   foreach (*R2 in *Q2) {
     *H = *R2.META_DATA_ATTR_VALUE;
-    writeLine ("stdout", "  For *Pass *Path, Audit-Handle = *H");
+    writeLine ("stdout", "    *Path, Audit-Handle = *H");
   }
 }
 racGlobalSet = maing
