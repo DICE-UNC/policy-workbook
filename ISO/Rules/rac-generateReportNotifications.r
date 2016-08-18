@@ -57,5 +57,5 @@ racWriteManifest( *OutFile, *Rep, *Source ) {
   msiDataObjClose(*L_FD, *Status);
   msiDataObjRepl(*Lfile, "updateRepl=++++verifyChksum=", *Stat);
 }
-INPUT *Docs=$"Archive-SP, Archive-CP, Archive-EA" 
+INPUT *Docs=$"Archive-SP, Archive-CP, Archive-ERR" 
 OUTPUT ruleExecOut 
