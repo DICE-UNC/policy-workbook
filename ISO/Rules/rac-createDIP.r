@@ -3,7 +3,7 @@ createDIP {
 # Policy 50
 # rac-createDIP.r
 # create a metadata file that contains all metadata associated with an AIP
-  msiGetSystemTime (*Tim. "human");
+  msiGetSystemTime (*Tim, "human");
   *Coll = GLOBAL_ACCOUNT ++ "/*Archive/" ++ GLOBAL_ARCHIVES;
   *Path = "*Coll/*Aip";
   *Buf = "Create a DIP";

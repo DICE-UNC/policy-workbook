@@ -17,7 +17,6 @@ createAIP {
   if (*Nrepl > *Num) {
     *Msg = "Cannot create the required number of replicas, *Nrepl, on resource *Stor";
     racNotify (*Archive, *Msg);
-    fail;
   }
   *Accto = GLOBAL_OWNER;
   writeLine ("stdout", "Creating AIPs from *Coll on *Tim");
@@ -41,7 +40,7 @@ createAIP {
         msiSetACL ("default", "read", *Acctr, *Pd);
       }
       writeLine ("stdout", "  Created *Pd from *Ps");
-      msiStripAVUs (*Pd, "", *Status);
+      msiStripAVUs (*Pd, "data", *Status);
       msiCopyAVUMetadata (*Ps, *Pd, *St1);
 # create handle
       if (*Han == "1") { racCreateHandle (*C, *F); }
@@ -116,7 +115,7 @@ racCheckMsg (*Msg, *Msgt) {
 }
 racCheckNumReplicas (*Res, *Num) {
 # Policy function to determine how many replicas will be made by a resource
-  *File = "racchecknumreplica234";
+  *File = "rac234";
   *Coll = GLOBAL_ACCOUNT;
   *Path = "*Coll/*File";
   *Flags = "destRescName=*Res++++forceFlag=";
@@ -153,19 +152,27 @@ racNotify (*Archive, *Msg) {
   msiGetSystemTime (*Tim, "human");
   *Body = "Please set attribute Archive-Email on *Archive";
   *Col = GLOBAL_ACCOUNT ++ "/*Archive";
+  isColl (*Col, "stdout", *St);
   *Q1 = select count(META_COLL_ATTR_VALUE) where COLL_NAME = *Col and META_COLL_ATTR_NAME = "Archive-Email";
   foreach (*R1 in *Q1) { *Num = *R1.META_COLL_ATTR_VALUE; }
+  *Note = "  Notification message";
   if (*Num == "0") {
 # notify the repository administrator that the Archive-Email address is missing
     *C = GLOBAL_ACCOUNT ++ "/" ++ GLOBAL_REPOSITORY;
-    *Q2 = select META_COLL_ATTR_VALUE where COLL_NAME = *C and META_COLL_ATTR_NAME = "Repository-Email";
-    foreach (*R2 in *Q2) { *Add = *R2.META_COLL_ATTR_VALUE; }
-    msiSendMail (*Add, "Response required, missing metadata", *Body);
-    *Note = "Sent message about Missing metadata to *Add about *Body on *Tim";
-    writeLine ("stdout", "*Note");
+    isColl (*C, "stdout", *Sta);
+    *Q2 = select count(META_COLL_ATTR_VALUE) where COLL_NAME = *C and META_COLL_ATTR_NAME = "Repository-Email";
+    foreach (*R2 in *Q2) { *N = *R2.META_COLL_ATTR_VALUE; }
+    if (*N != "0") {
+      *Q2a = select META_COLL_ATTR_VALUE where COLL_NAME = *C and META_COLL_ATTR_NAME = "Repository-Email";
+      foreach (*R2a in *Q2a) { 
+        *Add = *R2a.META_COLL_ATTR_VALUE;
+        msiSendMail (*Add, "Response required, missing metadata", *Body);
+        *Note = "Sent message about Missing metadata to *Add about *Body on *Tim";
+        writeLine ("stdout", "*Note");
+      }
+    } else { writeLine ("stdout", "Missing E-mail for administrator"); }
   } else {
     *Q3 = select META_COLL_ATTR_VALUE where COLL_NAME = *Col and META_COLL_ATTR_NAME = "Archive-Email";
-    *Note = "";
     foreach (*R3 in *Q3) {
       *Add = *R3.META_COLL_ATTR_VALUE;
       *Note = *Note ++ "Sent message to *Add about *Msg on *Tim\n";
